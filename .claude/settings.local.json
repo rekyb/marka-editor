@@ -38,7 +38,8 @@
       "PowerShell(taskkill *)",
       "Bash(git reset *)",
       "Bash(kill %1)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(npx vitest *)"
     ]
   },
   "model": "haiku"

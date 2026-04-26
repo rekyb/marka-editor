@@ -2,7 +2,7 @@
 
 # Welcome to Marka Editor
 
-Open source markdown editor for anyone who need fast, distraction-free markdown editing.
+Marka is an open source markdown editor for anyone who need fast, distraction-free markdown editing and viewing.
 
 ## Getting Started
 

@@ -1,8 +1,8 @@
-# Marka Editor
+![Marka Editor](https://raw.githubusercontent.com/rekyb/marka-editor/72db31c919d0f39dce88822cd0ac3d556bf42978/public/icon_with_text.svg)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rekyb_marka-editor&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rekyb_marka-editor)
+# Welcome to Marka Editor
 
-Open source markdown editor for anyone who need fast, distraction-free markdown editing.
+Marka is an open source markdown editor for anyone who need fast, distraction-free markdown editing and viewing.
 
 ## Features (v0)
 
@@ -25,6 +25,7 @@ Open source markdown editor for anyone who need fast, distraction-free markdown 
 **Phase 4** ✅ — Formatting Toolbar Complete
 
 The editor is fully functional with:
+
 - ✅ Real-time markdown editing with CodeMirror 6
 - ✅ Live preview mode with syntax highlighting for code blocks
 - ✅ 14+ formatting commands via toolbar
@@ -99,7 +100,7 @@ src/
 ├── types/
 │ └── editor.ts # TypeScript interfaces (FormattingCommand, DocumentState, etc.)
 └── utils/
- └── markdown-commands.ts # Formatting command implementations
+└── markdown-commands.ts # Formatting command implementations
 \`\`\`
 
 ## Roadmap
@@ -186,6 +187,7 @@ Strict TypeScript mode enforced. All components and hooks are fully typed. Forma
 ### Editor Integration
 
 CodeMirror 6 is used with:
+
 - Custom extensions for markdown language support
 - Undo/redo via CodeMirror's native command system
 - View updates tracked for state management

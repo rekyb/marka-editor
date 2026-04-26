@@ -1,7 +1,8 @@
 'use client';
 
 import { Toolbar } from '@/components/Toolbar';
-import { FormattingCommand } from '@/types/editor';
+import { FileMenu } from '@/components/FileMenu';
+import { FormattingCommand, RecentFile } from '@/types/editor';
 
 interface HeaderProps {
   readonly fileName: string;
@@ -13,15 +14,36 @@ interface HeaderProps {
   readonly onRedo: () => void;
   readonly isPreviewActive: boolean;
   readonly onTogglePreview: () => void;
+  readonly onOpenFile: () => Promise<void>;
+  readonly onSaveFile: () => void;
+  readonly recentFiles: readonly RecentFile[];
+  readonly onLoadRecentFile: (fileKey: string) => Promise<void>;
+  readonly onClearRecents: () => void;
 }
 
-export function Header({ fileName, isDirty, onCommand, canUndo, canRedo, onUndo, onRedo, isPreviewActive, onTogglePreview }: HeaderProps) {
+export function Header({
+  fileName,
+  isDirty,
+  onCommand,
+  canUndo,
+  canRedo,
+  onUndo,
+  onRedo,
+  isPreviewActive,
+  onTogglePreview,
+  onOpenFile,
+  onSaveFile,
+  recentFiles,
+  onLoadRecentFile,
+  onClearRecents,
+}: HeaderProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10 }}>
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           height: '65px',
           padding: '0 16px',
           backgroundColor: '#ffffff',
@@ -32,9 +54,18 @@ export function Header({ fileName, isDirty, onCommand, canUndo, canRedo, onUndo,
           color: '#0a0a0a',
         }}
       >
-        <img src="/icon.svg" width={32} height={32} alt="" style={{ marginRight: '10px', flexShrink: 0 }} />
-        {fileName}
-        {isDirty && <span style={{ marginLeft: '8px', color: '#6366f1' }}>●</span>}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/icon.svg" width={32} height={32} alt="" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '14px', fontWeight: 500, color: '#0a0a0a' }}>{fileName}</span>
+          {isDirty && <span style={{ color: '#6366f1', fontSize: '12px' }}>●</span>}
+        </div>
+        <FileMenu
+          onOpenFile={onOpenFile}
+          onSaveFile={onSaveFile}
+          recentFiles={recentFiles}
+          onLoadRecentFile={onLoadRecentFile}
+          onClearRecents={onClearRecents}
+        />
       </div>
 
       <Toolbar

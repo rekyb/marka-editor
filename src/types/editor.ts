@@ -34,3 +34,9 @@ export interface KeyboardShortcut {
   readonly callback: () => void;
   readonly description: string;
 }
+
+export interface RecentFile {
+  readonly key: string;
+  readonly name: string;
+  readonly timestamp: number;
+}
