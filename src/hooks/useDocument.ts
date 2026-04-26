@@ -26,7 +26,12 @@ export function useDocument(initialFileName = 'untitled.md'): UseDocumentReturn 
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        return JSON.parse(stored);
+        const { content, fileName } = JSON.parse(stored);
+        return {
+          content: content ?? '',
+          fileName: fileName ?? initialFileName,
+          isDirty: false,
+        };
       } catch {
         return {
           content: '',
@@ -42,12 +47,12 @@ export function useDocument(initialFileName = 'untitled.md'): UseDocumentReturn 
     };
   });
 
-  // Persist to localStorage whenever state changes
+  // Persist only content and fileName (not isDirty, which is transient UI state)
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ content: state.content, fileName: state.fileName }));
     }
-  }, [state]);
+  }, [state.content, state.fileName]);
 
   const setContent = useCallback((content: string): void => {
     setState((prev) => ({

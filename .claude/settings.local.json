@@ -22,7 +22,17 @@
       "Bash(git status)",
       "Bash(git log *)",
       "Bash(git diff *)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(npx next *)",
+      "Bash(node -e \"require\\('lucide-react'\\)\")",
+      "Bash(pnpm add *)",
+      "Bash(node *)",
+      "Bash(find *)",
+      "Bash(pkill -f \"node.*next\")",
+      "PowerShell(Stop-Process *)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(cd D:\\\\\\\\Projects\\\\\\\\marka-editor)"
     ]
-  }
+  },
+  "model": "haiku"
 }
