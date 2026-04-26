@@ -114,7 +114,7 @@ export function FileMenu({
               border: '1px solid #d5d5d5',
               borderRadius: '4px',
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-              minWidth: '280px',
+              minWidth: '240px',
               zIndex: 100,
             }}
           >
@@ -129,31 +129,30 @@ export function FileMenu({
                     key={file.key}
                     onClick={() => handleRecentFileClick(file.key)}
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
+                      display: 'block',
                       width: '100%',
                       padding: '8px 12px',
                       textAlign: 'left',
                       backgroundColor: 'transparent',
                       border: 'none',
                       cursor: 'pointer',
+                      fontSize: '12px',
+                      color: '#0a0a0a',
                       borderBottom: '1px solid #f0f0f0',
                       fontFamily: 'var(--font-dm-sans), sans-serif',
                       transition: 'background-color 0.15s',
-                      alignItems: 'flex-start',
-                      gap: '4px',
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f9f9f9')}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                     title={file.name}
                   >
-                    <span style={{ fontSize: '12px', color: '#0a0a0a', fontWeight: 500 }}>
-                      {truncateName(file.name)}
-                    </span>
-                    <div style={{ display: 'flex', gap: '8px', fontSize: '10px', color: '#999', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      <span>{file.name}</span>
-                      <span>•</span>
-                      <span style={{ flexShrink: 0 }}>{formatTime(file.timestamp)}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                        {truncateName(file.name)}
+                      </span>
+                      <span style={{ fontSize: '11px', color: '#999', flexShrink: 0 }}>
+                        {formatTime(file.timestamp)}
+                      </span>
                     </div>
                   </button>
                 ))}
