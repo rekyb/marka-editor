@@ -86,4 +86,94 @@ describe('EditorLayout', () => {
     expect(statusBar).toBeInTheDocument();
     expect(screen.getByText('test.md')).toBeInTheDocument();
   });
+
+  it('should handle drop of valid markdown file', async () => {
+    const { container } = render(<EditorLayout />);
+    const mainDiv = container.querySelector('[style*="display: flex"]') as HTMLElement;
+
+    const fileContent = '# Test File\nMarkdown content';
+    const file = new File([fileContent], 'test.md', { type: 'text/markdown' });
+
+    const dropEvent = new DragEvent('drop', {
+      dataTransfer: new DataTransfer(),
+      bubbles: true,
+    });
+    dropEvent.dataTransfer?.items.add(file);
+
+    fireEvent.drop(mainDiv, { dataTransfer: dropEvent.dataTransfer });
+
+    await waitFor(() => {
+      expect(mainDiv).toHaveStyle({ backgroundColor: 'rgb(250, 250, 250)' });
+    });
+  });
+
+  it('should reject non-markdown files', () => {
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const { container } = render(<EditorLayout />);
+    const mainDiv = container.querySelector('[style*="display: flex"]') as HTMLElement;
+
+    const file = new File(['content'], 'test.pdf', { type: 'application/pdf' });
+    const dropEvent = new DragEvent('drop', {
+      dataTransfer: new DataTransfer(),
+      bubbles: true,
+    });
+    dropEvent.dataTransfer?.items.add(file);
+
+    fireEvent.drop(mainDiv, { dataTransfer: dropEvent.dataTransfer });
+
+    expect(consoleSpy).toHaveBeenCalledWith('Only markdown files are supported');
+    consoleSpy.mockRestore();
+  });
+
+  it('should show visual feedback on drag over', () => {
+    const { container } = render(<EditorLayout />);
+    const mainDiv = container.querySelector('[style*="display: flex"]') as HTMLElement;
+
+    const dragOverEvent = new DragEvent('dragover', { bubbles: true });
+    fireEvent.dragOver(mainDiv, { dataTransfer: new DataTransfer() });
+
+    expect(mainDiv).toHaveStyle({
+      backgroundColor: 'rgba(25, 118, 210, 0.05)',
+      borderTop: '2px dashed rgb(25, 118, 210)',
+    });
+  });
+
+  it('should remove visual feedback on drag leave', () => {
+    const { container } = render(<EditorLayout />);
+    const mainDiv = container.querySelector('[style*="display: flex"]') as HTMLElement;
+
+    fireEvent.dragOver(mainDiv, { dataTransfer: new DataTransfer() });
+    expect(mainDiv).toHaveStyle({ backgroundColor: 'rgba(25, 118, 210, 0.05)' });
+
+    fireEvent.dragLeave(mainDiv);
+    expect(mainDiv).toHaveStyle({ backgroundColor: 'rgb(250, 250, 250)' });
+  });
+
+  it('should handle file read errors gracefully', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    const { container } = render(<EditorLayout />);
+    const mainDiv = container.querySelector('[style*="display: flex"]') as HTMLElement;
+
+    const file = new File(['content'], 'test.md', { type: 'text/markdown' });
+    const dropEvent = new DragEvent('drop', {
+      dataTransfer: new DataTransfer(),
+      bubbles: true,
+    });
+    dropEvent.dataTransfer?.items.add(file);
+
+    jest.spyOn(FileReader.prototype, 'readAsText').mockImplementation(function () {
+      setTimeout(() => {
+        this.onerror?.(new ProgressEvent('error'));
+      }, 0);
+    });
+
+    fireEvent.drop(mainDiv, { dataTransfer: dropEvent.dataTransfer });
+
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to read dropped file');
+    });
+
+    consoleErrorSpy.mockRestore();
+    jest.restoreAllMocks();
+  });
 });

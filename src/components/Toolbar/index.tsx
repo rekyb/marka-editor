@@ -147,39 +147,6 @@ export function Toolbar({ onCommand, canUndo, canRedo, onUndo, onRedo, isPreview
       >
         <button
           onClick={onTogglePreview}
-          title="Syntax mode"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            padding: '4px 8px',
-            borderRadius: '3px',
-            border: 'none',
-            backgroundColor: !isPreviewActive ? '#6366f1' : 'transparent',
-            color: !isPreviewActive ? '#ffffff' : '#0a0a0a',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-dm-sans), sans-serif',
-            fontSize: '12px',
-            fontWeight: 500,
-            transition: 'background-color 0.15s ease',
-          }}
-          onMouseEnter={(e) => {
-            if (isPreviewActive) {
-              e.currentTarget.style.backgroundColor = '#d0d0d0';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (isPreviewActive) {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }
-          }}
-        >
-          <Braces size={14} />
-          Syntax
-        </button>
-
-        <button
-          onClick={onTogglePreview}
           title="Formatted mode"
           style={{
             display: 'flex',
@@ -209,6 +176,39 @@ export function Toolbar({ onCommand, canUndo, canRedo, onUndo, onRedo, isPreview
         >
           <FileText size={14} />
           Formatted
+        </button>
+
+        <button
+          onClick={onTogglePreview}
+          title="Syntax mode"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            padding: '4px 8px',
+            borderRadius: '3px',
+            border: 'none',
+            backgroundColor: !isPreviewActive ? '#6366f1' : 'transparent',
+            color: !isPreviewActive ? '#ffffff' : '#0a0a0a',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-dm-sans), sans-serif',
+            fontSize: '12px',
+            fontWeight: 500,
+            transition: 'background-color 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            if (isPreviewActive) {
+              e.currentTarget.style.backgroundColor = '#d0d0d0';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (isPreviewActive) {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }
+          }}
+        >
+          <Braces size={14} />
+          Syntax
         </button>
       </div>
     </div>

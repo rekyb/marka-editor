@@ -23,6 +23,7 @@ export default function EditorLayout() {
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const editorViewRef = useRef<EditorView | null>(null);
 
   const handleFileLoaded = useCallback(
@@ -114,8 +115,162 @@ export default function EditorLayout() {
     setIsPreviewActive((prev) => !prev);
   };
 
+  useEffect(() => {
+    const cancel = (): void => {
+      setIsDragging(false);
+    };
+    // Catches drops outside our container (browser handles file, overlay stays otherwise)
+    document.addEventListener('drop', cancel);
+    // Catches tab/window switch mid-drag
+    window.addEventListener('blur', cancel);
+    return () => {
+      document.removeEventListener('drop', cancel);
+      window.removeEventListener('blur', cancel);
+    };
+  }, []);
+
+  const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>): void => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>): void => {
+    e.preventDefault();
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>): void => {
+    // relatedTarget is where the cursor moved TO — if outside the container, drag has left
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDragging(false);
+    }
+  }, []);
+
+  const handleDropFile = useCallback((e: React.DragEvent<HTMLDivElement>): void => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+
+    const validExtensions = ['.md', '.markdown', '.txt'];
+    const isValidType = validExtensions.some((ext) => file.name.toLowerCase().endsWith(ext));
+    if (!isValidType) {
+      console.warn('Only markdown files are supported');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event: ProgressEvent<FileReader>): void => {
+      const content = event.target?.result as string;
+      handleFileLoaded(content, file.name);
+    };
+    reader.onerror = (): void => {
+      console.error('Failed to read dropped file');
+    };
+    reader.readAsText(file);
+  }, [handleFileLoaded]);
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#fafafa' }}>
+    <div
+      onDrop={handleDropFile}
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        backgroundColor: '#fafafa',
+        position: 'relative',
+      }}
+    >
+      {isDragging && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            animation: 'fadeIn 0.2s ease',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '48px',
+              borderRadius: '12px',
+              border: '3px dashed rgba(255, 255, 255, 0.6)',
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              minWidth: '320px',
+              minHeight: '320px',
+              textAlign: 'center',
+              animation: 'scaleIn 0.3s ease',
+            }}
+          >
+            <svg
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              strokeWidth="2"
+              style={{ marginBottom: '16px' }}
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <h2
+              style={{
+                fontSize: '24px',
+                fontWeight: 600,
+                color: '#fff',
+                margin: '0 0 8px 0',
+              }}
+            >
+              Drop your file here
+            </h2>
+            <p
+              style={{
+                fontSize: '14px',
+                color: '#fff',
+                margin: 0,
+              }}
+            >
+              Markdown files (.md, .markdown, .txt)
+            </p>
+          </div>
+        </div>
+      )}
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @keyframes scaleIn {
+          from {
+            transform: scale(0.8);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+      `}</style>
       <Header
         fileName={isHydrated ? state.fileName : 'untitled.md'}
         isDirty={isHydrated ? state.isDirty : false}
