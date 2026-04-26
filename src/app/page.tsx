@@ -117,8 +117,8 @@ export default function EditorLayout() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#fafafa' }}>
       <Header
-        fileName={state.fileName}
-        isDirty={state.isDirty}
+        fileName={isHydrated ? state.fileName : 'untitled.md'}
+        isDirty={isHydrated ? state.isDirty : false}
         onCommand={handleCommand}
         canUndo={canUndo}
         canRedo={canRedo}
