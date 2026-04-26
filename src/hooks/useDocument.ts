@@ -14,24 +14,25 @@ interface UseDocumentReturn {
 }
 
 export function useDocument(initialFileName = 'untitled.md'): UseDocumentReturn {
-  const [state, setState] = useState<DocumentState>({
-    content: '',
-    fileName: initialFileName,
-    isDirty: false,
-  });
-
-  // Load from localStorage on mount
-  useEffect(() => {
+  const [state, setState] = useState<DocumentState>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        const parsed = JSON.parse(stored);
-        setState(parsed);
+        return JSON.parse(stored);
       } catch {
-        // Invalid JSON, start fresh
+        return {
+          content: '',
+          fileName: initialFileName,
+          isDirty: false,
+        };
       }
     }
-  }, []);
+    return {
+      content: '',
+      fileName: initialFileName,
+      isDirty: false,
+    };
+  });
 
   // Persist to localStorage whenever state changes
   useEffect(() => {
