@@ -46,6 +46,23 @@
 - Attempting to make CodeMirror's internal scrollbar "sticky" via CSS or wrapper hacks is friction-prone. Parallel scrollbar elements synced via scroll event listeners work more reliably.
 - Wrapping code blocks in extra divs when returning from react-markdown custom component handlers breaks the expected HTML structure (pre cannot be descendant of p).
 
+## 2026-04-26 (Evening — Dynamic Title & Status Bar)
+
+### Corrections
+- Assumed file-opening functionality was needed when user asked for dynamic title display. Over-engineered with Ctrl+O shortcut and file input, then removed when user clarified scope. Clarify feature scope explicitly before implementing extensions.
+- Created clickable filename button to trigger file picker when user only wanted plain text title that updates dynamically. Misread UI interaction request as requiring affordance change.
+
+### Discoveries
+- User prefers formatted/preview mode as default on app load, not syntax mode. Suggests UX priority for this app is consuming markdown content, not editing.
+- Version tracking in constants file makes automatic version display in status bar and simplifies version updates at merge time.
+
+### Patterns
+- User requests benefit from literal, minimal implementation rather than feature extensions. File title request was cleanest when reduced to only title update, no file picker.
+- StatusBar with left-right split layout (version on left, document stats on right) provides clean visual hierarchy for app info vs document info.
+
+### Anti-Patterns
+- Adding extra functionality beyond what was requested (file open feature for a title display request) creates unnecessary rework when user clarifies scope.
+
 ## Tech Stack Decisions
 
 - CodeMirror 6 for editor (lightweight, markdown support, undo/redo built-in)
@@ -53,3 +70,4 @@
 - Plain HTML/CSS for layout in Phase 1 (avoid MUI SSR issues initially)
 - MUI v7 + Emotion deferred to Phase 2+ (add when components need styling)
 - localStorage for auto-save (client-side only in v0)
+- Default to formatted/preview mode on app load (UX priority: content consumption)
