@@ -87,7 +87,7 @@ export default function EditorLayout() {
         onTogglePreview={handleTogglePreview}
       />
 
-      <div style={{ flex: 1, marginTop: '90px' }}>
+      <div style={{ flex: 1, marginTop: '90px', paddingBottom: '40px', overflow: 'auto' }}>
         {isPreviewActive ? (
           <Preview content={state.content} />
         ) : (
@@ -100,11 +100,13 @@ export default function EditorLayout() {
       </div>
 
       {isHydrated && (
-        <StatusBar
-          stats={statusBarStats}
-          fileName={state.fileName}
-          isDirty={state.isDirty}
-        />
+        <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 10 }}>
+          <StatusBar
+            stats={statusBarStats}
+            fileName={state.fileName}
+            isDirty={state.isDirty}
+          />
+        </div>
       )}
 
       <ImageInsertModal
