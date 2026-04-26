@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FolderOpen, Download, ChevronDown } from 'lucide-react';
+import { FolderOpen, Download, Clock } from 'lucide-react';
 import { RecentFile } from '@/types/editor';
 
 interface FileMenuProps {
@@ -76,21 +76,12 @@ export function FileMenu({
       <div style={{ position: 'relative' }}>
         <button
           onClick={() => setIsRecentOpen(!isRecentOpen)}
-          style={{
-            ...buttonBase,
-            width: 'auto',
-            padding: '0 8px',
-            backgroundColor: isRecentOpen ? '#f0f0f0' : '#f9f9f9',
-          }}
+          style={buttonBase}
           title="Recent Files"
-          onMouseEnter={(e) => {
-            if (!isRecentOpen) e.currentTarget.style.backgroundColor = '#f0f0f0';
-          }}
-          onMouseLeave={(e) => {
-            if (!isRecentOpen) e.currentTarget.style.backgroundColor = '#f9f9f9';
-          }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f0f0f0')}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f9f9f9')}
         >
-          <ChevronDown size={16} />
+          <Clock size={16} />
         </button>
 
         {isRecentOpen && (
