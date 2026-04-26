@@ -57,11 +57,6 @@ export function FileMenu({
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingRight: '16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: '150px' }}>
-        <span style={{ fontSize: '14px', fontWeight: 500, color: '#0a0a0a' }}>{fileName}</span>
-        {isDirty && <span style={{ color: '#6366f1', fontSize: '12px' }}>●</span>}
-      </div>
-
       <button
         onClick={handleOpenClick}
         style={buttonBase}
@@ -81,6 +76,11 @@ export function FileMenu({
       >
         <Download size={16} />
       </button>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: '120px' }}>
+        <span style={{ fontSize: '13px', fontWeight: 500, color: '#0a0a0a' }}>{fileName}</span>
+        {isDirty && <span style={{ color: '#6366f1', fontSize: '11px' }}>●</span>}
+      </div>
 
       <div style={{ position: 'relative' }}>
         <button
