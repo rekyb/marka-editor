@@ -15,6 +15,14 @@ interface UseDocumentReturn {
 
 export function useDocument(initialFileName = 'untitled.md'): UseDocumentReturn {
   const [state, setState] = useState<DocumentState>(() => {
+    if (typeof window === 'undefined') {
+      return {
+        content: '',
+        fileName: initialFileName,
+        isDirty: false,
+      };
+    }
+
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
@@ -36,7 +44,9 @@ export function useDocument(initialFileName = 'untitled.md'): UseDocumentReturn 
 
   // Persist to localStorage whenever state changes
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
   }, [state]);
 
   const setContent = useCallback((content: string): void => {

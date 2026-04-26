@@ -25,3 +25,47 @@ code, pre {
   flex-direction: column;
   min-height: 100vh;
 }
+
+.cm-editor {
+  height: 100%;
+}
+
+.markdown-preview {
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.markdown-preview img {
+  max-width: 100%;
+  height: auto;
+  margin: 12px 0;
+}
+
+.markdown-preview table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.markdown-preview table td,
+.markdown-preview table th {
+  border: 1px solid #e5e5e5;
+  padding: 8px 12px;
+}
+
+.markdown-preview table th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  #__next {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 768px) {
+  #__next > div:nth-child(1) {
+    flex-direction: row;
+  }
+}
