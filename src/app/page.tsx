@@ -87,7 +87,7 @@ export default function EditorLayout() {
         onTogglePreview={handleTogglePreview}
       />
 
-      <div style={{ flex: 1, marginTop: '90px', paddingBottom: '40px', overflow: 'auto' }}>
+      <div style={{ flex: 1, marginTop: '90px', paddingBottom: '40px', minHeight: 0 }}>
         {isPreviewActive ? (
           <Preview content={state.content} />
         ) : (
