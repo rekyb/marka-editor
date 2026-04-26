@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(pnpm create *)",
+      "Bash(npm create *)",
+      "Bash(cd /tmp)",
+      "Bash(npx create-next-app@latest /d/Projects/project-ran --typescript --tailwind=false --eslint=false --app --src-dir --import-alias=@/* --skip-install)",
+      "Bash(npm install *)"
+    ]
+  }
+}
