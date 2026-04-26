@@ -19,6 +19,9 @@
       "Bash(git commit -m 'feat: Phase 2 - Core Editor Setup complete *)",
       "Bash(git commit -m 'ci: Add SonarQube integration with GitHub Actions *)",
       "Bash(git commit *)",
+      "Bash(git status)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
       "WebFetch(domain:github.com)"
     ]
   }
