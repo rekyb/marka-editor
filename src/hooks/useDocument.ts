@@ -5,7 +5,15 @@ import { DocumentState } from '@/types/editor';
 
 const STORAGE_KEY = 'markdown-editor-document';
 
-export function useDocument(initialFileName = 'untitled.md') {
+interface UseDocumentReturn {
+  readonly state: DocumentState;
+  readonly setContent: (content: string) => void;
+  readonly setFileName: (fileName: string) => void;
+  readonly markClean: () => void;
+  readonly markDirty: () => void;
+}
+
+export function useDocument(initialFileName = 'untitled.md'): UseDocumentReturn {
   const [state, setState] = useState<DocumentState>({
     content: '',
     fileName: initialFileName,
@@ -30,7 +38,7 @@ export function useDocument(initialFileName = 'untitled.md') {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
-  const setContent = useCallback((content: string) => {
+  const setContent = useCallback((content: string): void => {
     setState((prev) => ({
       ...prev,
       content,
@@ -38,7 +46,7 @@ export function useDocument(initialFileName = 'untitled.md') {
     }));
   }, []);
 
-  const setFileName = useCallback((fileName: string) => {
+  const setFileName = useCallback((fileName: string): void => {
     setState((prev) => ({
       ...prev,
       fileName,
@@ -46,14 +54,14 @@ export function useDocument(initialFileName = 'untitled.md') {
     }));
   }, []);
 
-  const markClean = useCallback(() => {
+  const markClean = useCallback((): void => {
     setState((prev) => ({
       ...prev,
       isDirty: false,
     }));
   }, []);
 
-  const markDirty = useCallback(() => {
+  const markDirty = useCallback((): void => {
     setState((prev) => ({
       ...prev,
       isDirty: true,

@@ -3,14 +3,23 @@
 import { useState, useCallback } from 'react';
 import { HistoryState } from '@/types/editor';
 
-export function useUndoRedo(initialContent = '') {
+interface UseUndoRedoReturn {
+  readonly content: string;
+  readonly push: (content: string) => void;
+  readonly undo: () => void;
+  readonly redo: () => void;
+  readonly canUndo: boolean;
+  readonly canRedo: boolean;
+}
+
+export function useUndoRedo(initialContent = ''): UseUndoRedoReturn {
   const [history, setHistory] = useState<HistoryState>({
     past: [],
     present: initialContent,
     future: [],
   });
 
-  const push = useCallback((content: string) => {
+  const push = useCallback((content: string): void => {
     setHistory((prev) => ({
       past: [...prev.past, prev.present],
       present: content,
@@ -18,7 +27,7 @@ export function useUndoRedo(initialContent = '') {
     }));
   }, []);
 
-  const undo = useCallback(() => {
+  const undo = useCallback((): void => {
     setHistory((prev) => {
       if (prev.past.length === 0) return prev;
       const newPast = prev.past.slice(0, -1);
@@ -31,7 +40,7 @@ export function useUndoRedo(initialContent = '') {
     });
   }, []);
 
-  const redo = useCallback(() => {
+  const redo = useCallback((): void => {
     setHistory((prev) => {
       if (prev.future.length === 0) return prev;
       const newPresent = prev.future[0];
