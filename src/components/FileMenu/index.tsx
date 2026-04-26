@@ -29,6 +29,26 @@ const buttonBase: React.CSSProperties = {
   padding: 0,
 };
 
+function formatTime(timestamp: number): string {
+  const now = Date.now();
+  const diff = now - timestamp;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  if (days < 7) return `${days}d ago`;
+
+  const date = new Date(timestamp);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function truncateName(name: string, maxLength: number = 35): string {
+  return name.length > maxLength ? `${name.substring(0, maxLength)}...` : name;
+}
+
 export function FileMenu({
   onOpenFile,
   onSaveFile,
@@ -94,7 +114,7 @@ export function FileMenu({
               border: '1px solid #d5d5d5',
               borderRadius: '4px',
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-              minWidth: '200px',
+              minWidth: '280px',
               zIndex: 100,
             }}
           >
@@ -109,23 +129,32 @@ export function FileMenu({
                     key={file.key}
                     onClick={() => handleRecentFileClick(file.key)}
                     style={{
-                      display: 'block',
+                      display: 'flex',
+                      flexDirection: 'column',
                       width: '100%',
                       padding: '8px 12px',
                       textAlign: 'left',
                       backgroundColor: 'transparent',
                       border: 'none',
                       cursor: 'pointer',
-                      fontSize: '12px',
-                      color: '#0a0a0a',
                       borderBottom: '1px solid #f0f0f0',
                       fontFamily: 'var(--font-dm-sans), sans-serif',
                       transition: 'background-color 0.15s',
+                      alignItems: 'flex-start',
+                      gap: '4px',
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f9f9f9')}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                    title={file.name}
                   >
-                    {file.name}
+                    <span style={{ fontSize: '12px', color: '#0a0a0a', fontWeight: 500 }}>
+                      {truncateName(file.name)}
+                    </span>
+                    <div style={{ display: 'flex', gap: '8px', fontSize: '11px', color: '#999' }}>
+                      <span>Local File</span>
+                      <span>•</span>
+                      <span>{formatTime(file.timestamp)}</span>
+                    </div>
                   </button>
                 ))}
                 <button
