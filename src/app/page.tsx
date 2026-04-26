@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { EditorView } from '@codemirror/view';
 import type { ViewUpdate } from '@codemirror/view';
 import { undo as cmUndo, redo as cmRedo, undoDepth, redoDepth } from '@codemirror/commands';
@@ -11,11 +11,12 @@ import { StatusBar } from '@/components/StatusBar';
 import { ImageInsertModal } from '@/components/ImageInsertModal';
 import { useDocument } from '@/hooks/useDocument';
 import { useStatusBar } from '@/hooks/useStatusBar';
+import { useFileIO } from '@/hooks/useFileIO';
 import { applyFormatting } from '@/utils/markdown-commands';
 import { FormattingCommand } from '@/types/editor';
 
 export default function EditorLayout() {
-  const { state, setContent, setFileName } = useDocument();
+  const { state, setContent, setFileName, markClean } = useDocument();
   const statusBarStats = useStatusBar(state.content);
   const [isHydrated, setIsHydrated] = useState(false);
   const [isPreviewActive, setIsPreviewActive] = useState(true);
@@ -23,6 +24,24 @@ export default function EditorLayout() {
   const [canRedo, setCanRedo] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const editorViewRef = useRef<EditorView | null>(null);
+
+  const handleFileLoaded = useCallback(
+    (content: string, fileName: string): void => {
+      setContent(content);
+      setFileName(fileName);
+      markClean();
+    },
+    [setContent, setFileName, markClean],
+  );
+
+  const fileIO = useFileIO({
+    onFileLoaded: handleFileLoaded,
+  });
+
+  const handleSaveFile = useCallback((): void => {
+    fileIO.saveFile(state.fileName, state.content);
+    markClean();
+  }, [fileIO, state.fileName, state.content, markClean]);
 
   useEffect(() => {
     setIsHydrated(true);
@@ -107,6 +126,11 @@ export default function EditorLayout() {
         onRedo={handleRedo}
         isPreviewActive={isPreviewActive}
         onTogglePreview={handleTogglePreview}
+        onOpenFile={fileIO.openFile}
+        onSaveFile={handleSaveFile}
+        recentFiles={fileIO.recentFiles}
+        onLoadRecentFile={fileIO.loadRecentFile}
+        onClearRecents={fileIO.clearRecentFiles}
       />
 
       <div style={{ height: 'calc(100vh - 130px)', marginTop: '107px', overflow: 'hidden' }}>
