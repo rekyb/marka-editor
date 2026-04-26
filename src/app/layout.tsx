@@ -23,6 +23,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Markdown Editor",
   description: "Professional markdown editor for writing and editing",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

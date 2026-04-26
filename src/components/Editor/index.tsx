@@ -95,6 +95,7 @@ export function Editor({ content, onChange, onEditorReady }: EditorProps) {
             searchKeymap: true,
           }}
           style={{
+            height: '100%',
             fontFamily: 'var(--font-jetbrains-mono), monospace',
             fontSize: '14px',
             lineHeight: '1.6',

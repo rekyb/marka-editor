@@ -1,11 +1,10 @@
 'use client';
 
 import { StatusBarStats } from '@/hooks/useStatusBar';
+import { APP_NAME, APP_VERSION } from '@/constants';
 
 interface StatusBarProps {
   readonly stats: StatusBarStats;
-  readonly fileName: string;
-  readonly isDirty: boolean;
 }
 
 function formatFileSize(bytes: number): string {
@@ -19,7 +18,8 @@ function formatFileSize(bytes: number): string {
   return `${size} ${units[exponent]}`;
 }
 
-export function StatusBar({ stats, fileName, isDirty }: StatusBarProps) {
+export function StatusBar({ stats }: StatusBarProps) {
+  const sep = <span style={{ color: '#e8e8ec' }}>·</span>;
   return (
     <footer
       style={{
@@ -36,27 +36,17 @@ export function StatusBar({ stats, fileName, isDirty }: StatusBarProps) {
         color: '#6b6b6b',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span>{fileName}</span>
-        {isDirty && (
-          <span style={{ color: '#6366f1', fontWeight: 'bold' }}>●</span>
-        )}
-        <span style={{ color: '#e8e8ec' }}>|</span>
-        <span>{formatFileSize(stats.fileSize)}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <span>{APP_NAME}</span>
+        {sep}
+        <span>v<strong>{APP_VERSION}</strong></span>
       </div>
-
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <span>
-          Words: <strong>{stats.wordCount}</strong>
-        </span>
-        <span style={{ color: '#e8e8ec' }}>·</span>
-        <span>
-          Lines: <strong>{stats.lineCount}</strong>
-        </span>
-        <span style={{ color: '#e8e8ec' }}>·</span>
-        <span>
-          Characters: <strong>{stats.characterCount}</strong>
-        </span>
+        <span>Lines: <strong>{stats.lineCount}</strong></span>
+        {sep}
+        <span>Characters: <strong>{stats.characterCount}</strong></span>
+        {sep}
+        <span>File size: <strong>{formatFileSize(stats.fileSize)}</strong></span>
       </div>
     </footer>
   );

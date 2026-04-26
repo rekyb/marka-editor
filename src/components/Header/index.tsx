@@ -22,7 +22,7 @@ export function Header({ fileName, isDirty, onCommand, canUndo, canRedo, onUndo,
         style={{
           display: 'flex',
           alignItems: 'center',
-          height: '48px',
+          height: '65px',
           padding: '0 16px',
           backgroundColor: '#ffffff',
           borderBottom: '1px solid #e5e5e5',
@@ -32,6 +32,7 @@ export function Header({ fileName, isDirty, onCommand, canUndo, canRedo, onUndo,
           color: '#0a0a0a',
         }}
       >
+        <img src="/icon.svg" width={32} height={32} alt="" style={{ marginRight: '10px', flexShrink: 0 }} />
         {fileName}
         {isDirty && <span style={{ marginLeft: '8px', color: '#6366f1' }}>●</span>}
       </div>
