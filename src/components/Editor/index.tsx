@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import { lineNumbers } from '@codemirror/view';
 
 interface EditorProps {
-  content: string;
-  onChange: (content: string) => void;
+  readonly content: string;
+  readonly onChange: (content: string) => void;
 }
 
 export function Editor({ content, onChange }: EditorProps) {

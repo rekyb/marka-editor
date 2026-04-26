@@ -1,13 +1,13 @@
 export interface DocumentState {
-  content: string;
-  fileName: string;
-  isDirty: boolean;
+  readonly content: string;
+  readonly fileName: string;
+  readonly isDirty: boolean;
 }
 
 export interface HistoryState {
-  past: string[];
-  present: string;
-  future: string[];
+  readonly past: readonly string[];
+  readonly present: string;
+  readonly future: readonly string[];
 }
 
 export type FormattingCommand =
@@ -25,10 +25,10 @@ export type FormattingCommand =
   | 'horizontalRule';
 
 export interface KeyboardShortcut {
-  key: string;
-  ctrl?: boolean;
-  shift?: boolean;
-  alt?: boolean;
-  callback: () => void;
-  description: string;
+  readonly key: string;
+  readonly ctrl?: boolean;
+  readonly shift?: boolean;
+  readonly alt?: boolean;
+  readonly callback: () => void;
+  readonly description: string;
 }
