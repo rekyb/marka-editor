@@ -150,10 +150,10 @@ export function FileMenu({
                     <span style={{ fontSize: '12px', color: '#0a0a0a', fontWeight: 500 }}>
                       {truncateName(file.name)}
                     </span>
-                    <div style={{ display: 'flex', gap: '8px', fontSize: '11px', color: '#999' }}>
-                      <span>Local File</span>
+                    <div style={{ display: 'flex', gap: '8px', fontSize: '10px', color: '#999', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span>{file.name}</span>
                       <span>•</span>
-                      <span>{formatTime(file.timestamp)}</span>
+                      <span style={{ flexShrink: 0 }}>{formatTime(file.timestamp)}</span>
                     </div>
                   </button>
                 ))}
