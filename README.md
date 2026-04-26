@@ -7,15 +7,33 @@ Open source markdown editor for anyone who need fast, distraction-free markdown 
 ## Features (v0)
 
 - **Plain Text Editing** — Fast, responsive CodeMirror 6 editor with monospace font
-- **Syntax Highlighting** — Manual toggle for markdown syntax highlighting
-- **Live Preview** — Split-view layout on desktop, stacked on mobile with toggle
-- **Open & Save** — Load and save markdown files locally
-- **Basic Formatting** — Toolbar with markdown formatting shortcuts (bold, italic, code, lists, headings, etc.)
-- **Undo/Redo** — Full history stack with keyboard shortcuts (Ctrl+Z / Ctrl+Y)
-- **Line Numbers** — Always visible for reference
-- **Word Count** — Display word and character count in status bar
-- **Keyboard Shortcuts** — Full keyboard support for power users
+- **Syntax Highlighting** — Manual toggle for markdown syntax highlighting (via preview mode)
+- **Live Preview** — Toggle between syntax and formatted preview modes
+- **Formatting Toolbar** — 14+ markdown formatting shortcuts (bold, italic, code, lists, headings, links, images, tables, blockquotes, etc.)
+- **Image Insertion** — Modal dialog for inserting images with alt text
+- **Undo/Redo** — Full history stack with UI controls and keyboard shortcuts (Ctrl+Z / Ctrl+Y)
 - **Auto-Save** — Local storage persistence between sessions
+- **File Status** — Visual indicator (dot) for unsaved changes
+- **Line Numbers** — Always visible in editor for reference
+- **Syntax Highlighting in Code Blocks** — Prism.js highlighting for markdown code blocks
+- **Keyboard Shortcuts** — Full keyboard support for power users
+- **Word Count** — (Planned - Phase 5) Display word and character count in status bar
+- **Open & Save** — (Planned - Phase 6) Load and save markdown files locally
+
+## Current Status
+
+**Phase 4** ✅ — Formatting Toolbar Complete
+
+The editor is fully functional with:
+- ✅ Real-time markdown editing with CodeMirror 6
+- ✅ Live preview mode with syntax highlighting for code blocks
+- ✅ 14+ formatting commands via toolbar
+- ✅ Image insertion modal
+- ✅ Full undo/redo with UI controls
+- ✅ Auto-save to localStorage
+- ✅ Clean, distraction-free UI
+
+**Next Steps (Phase 5):** Add status bar with word/character count
 
 ## Tech Stack
 
@@ -58,18 +76,30 @@ npm run start
 src/
 ├── app/
 │ ├── layout.tsx # Root layout with font loading
-│ ├── page.tsx # Home page placeholder
-│ └── globals.css # Global styles and reset
+│ ├── page.tsx # Main editor layout (EditorLayout component)
+│ ├── globals.css # Global styles and reset
+│ ├── emotion-cache.tsx # Emotion cache provider for SSR
+│ └── providers.tsx # App providers (Emotion + fonts)
 ├── components/
-│ └── Editor/
-│ └── index.tsx # CodeMirror editor wrapper
+│ ├── Editor/
+│ │ └── index.tsx # CodeMirror editor wrapper
+│ ├── Preview/
+│ │ └── index.tsx # react-markdown preview with syntax highlighting
+│ ├── Header/
+│ │ └── index.tsx # File name, dirty indicator, toolbar integration
+│ ├── Toolbar/
+│ │ └── index.tsx # 14+ formatting commands with icons
+│ └── ImageInsertModal/
+│ └── index.tsx # Modal for inserting images with alt text
 ├── hooks/
 │ ├── useDocument.ts # Document state + localStorage
+│ ├── useDocument.test.ts # useDocument unit tests
 │ ├── useUndoRedo.ts # Undo/redo history stack
-│ └── use\*.ts # Feature hooks (forthcoming)
+│ └── useUndoRedo.test.ts # useUndoRedo unit tests
 ├── types/
-│ └── editor.ts # TypeScript interfaces for editor state
-└── utils/ # Utility functions (forthcoming)
+│ └── editor.ts # TypeScript interfaces (FormattingCommand, DocumentState, etc.)
+└── utils/
+ └── markdown-commands.ts # Formatting command implementations
 \`\`\`
 
 ## Roadmap
@@ -87,17 +117,21 @@ src/
 - \`useUndoRedo\` hook — undo/redo history
 - \`Editor\` component — CodeMirror integration with markdown support
 
-### Phase 3 → Preview & Layout
+### Phase 3 ✅ Complete
 
-- \`Preview\` component — react-markdown rendering
-- Responsive layout (desktop split-view, mobile stacked)
-- Preview toggle
+- \`Preview\` component — react-markdown rendering with syntax highlighting
+- Layout with editor/preview toggle
+- Mode toggle: "Syntax" (edit) and "Formatted" (preview) buttons
+- Empty state message for preview
 
-### Phase 4 → Formatting & Toolbar
+### Phase 4 ✅ Complete
 
-- Formatting toolbar component
-- Markdown command handling
-- Visual feedback for formatting
+- Formatting toolbar with 14+ commands
+- Markdown command handling via \`markdown-commands\` utility
+- Icon-based button UI with hover effects
+- Undo/redo buttons with state-based disabling
+- Image insertion modal dialog
+- Support for: bold, italic, code, link, image, headings (H1-H3), lists, code blocks, quotes, tables, horizontal rules
 
 ### Phase 5 → Status Bar
 
@@ -107,21 +141,24 @@ src/
 
 ### Phase 6 → File I/O
 
-- Load files from disk
+- Load files from disk (file picker)
 - Save files to disk
 - Recent files list
+- File format detection
 
 ### Phase 7 → Keyboard Shortcuts
 
 - Global keyboard shortcut registry
 - Settings/preferences modal
 - Customize shortcuts
+- Keyboard shortcut cheat sheet
 
 ### Phase 8 → Polish & Testing
 
 - Accessibility improvements (ARIA, semantic HTML)
 - Error handling and edge cases
 - Performance optimization
+- Mobile responsiveness improvements
 
 ### Phase 9 → E2E Testing
 
@@ -131,19 +168,33 @@ src/
 
 ## Development Notes
 
-### Hydration Workaround
+### Styling Approach
 
-This project uses plain HTML/CSS for layout in Phase 1 to avoid MUI SSR hydration mismatches. MUI v9 and Emotion styling will be integrated in Phase 2+ when components are built, after the foundation is stable.
+Phase 1-4 use inline styles and plain CSS to minimize dependencies. MUI v9 will be introduced in Phase 5+ to provide a unified component library and design system, as specified in CLAUDE.md.
 
 ### TypeScript
 
-Strict TypeScript mode enforced. All components and hooks are fully typed.
+Strict TypeScript mode enforced. All components and hooks are fully typed. FormattingCommand is a union type defining all supported markdown operations.
 
-### Testing (Forthcoming)
+### Testing Status
 
-- Unit tests with Vitest (80% coverage target)
-- E2E tests with Playwright
-- Component tests with @testing-library/react
+- ✅ Unit tests with Vitest for hooks (\`useDocument.test.ts\`, \`useUndoRedo.test.ts\`)
+- 📋 Component tests with @testing-library/react (Phase 8)
+- 📋 E2E tests with Playwright (Phase 9)
+- Target: 80% coverage on new files
+
+### Editor Integration
+
+CodeMirror 6 is used with:
+- Custom extensions for markdown language support
+- Undo/redo via CodeMirror's native command system
+- View updates tracked for state management
+- EditorView passed as ref to apply formatting commands
+
+### Known Dependencies
+
+- \`--legacy-peer-deps\` required for React 19 compatibility with CodeMirror
+- Emotion + Emotion Cache for SSR support (added to prevent hydration mismatch)
 
 ## Contributing
 

@@ -83,11 +83,18 @@ export function Toolbar({ onCommand, canUndo, canRedo, onUndo, onRedo, isPreview
       {COMMAND_BUTTONS.map(({ command, icon: Icon, title }) => (
         <button
           key={command}
-          onClick={() => { onCommand(command); }}
-          title={title}
-          style={buttonBase}
-          onMouseEnter={onEnter}
-          onMouseLeave={onLeave}
+          onClick={() => { if (!isPreviewActive) onCommand(command); }}
+          disabled={isPreviewActive}
+          title={isPreviewActive ? `${title} (disabled in formatted mode)` : title}
+          style={{
+            ...buttonBase,
+            backgroundColor: isPreviewActive ? '#f5f5f5' : '#f9f9f9',
+            color: isPreviewActive ? '#b0b0b0' : '#0a0a0a',
+            cursor: isPreviewActive ? 'not-allowed' : 'pointer',
+            borderColor: isPreviewActive ? '#d5d5d5' : '#d5d5d5',
+          }}
+          onMouseEnter={(e) => { if (!isPreviewActive) onEnter(e); }}
+          onMouseLeave={(e) => { if (!isPreviewActive) onLeave(e); }}
         >
           <Icon size={15} />
         </button>
@@ -97,32 +104,32 @@ export function Toolbar({ onCommand, canUndo, canRedo, onUndo, onRedo, isPreview
 
       <button
         onClick={onUndo}
-        disabled={!canUndo}
-        title="Undo (Ctrl+Z)"
+        disabled={!canUndo || isPreviewActive}
+        title={isPreviewActive ? 'Undo (disabled in formatted mode)' : 'Undo (Ctrl+Z)'}
         style={{
           ...buttonBase,
-          backgroundColor: canUndo ? '#f9f9f9' : '#f5f5f5',
-          color: canUndo ? '#0a0a0a' : '#b0b0b0',
-          cursor: canUndo ? 'pointer' : 'not-allowed',
+          backgroundColor: (canUndo && !isPreviewActive) ? '#f9f9f9' : '#f5f5f5',
+          color: (canUndo && !isPreviewActive) ? '#0a0a0a' : '#b0b0b0',
+          cursor: (canUndo && !isPreviewActive) ? 'pointer' : 'not-allowed',
         }}
-        onMouseEnter={(e) => { if (canUndo) onEnter(e); }}
-        onMouseLeave={(e) => { if (canUndo) onLeave(e); }}
+        onMouseEnter={(e) => { if (canUndo && !isPreviewActive) onEnter(e); }}
+        onMouseLeave={(e) => { if (canUndo && !isPreviewActive) onLeave(e); }}
       >
         <Undo2 size={15} />
       </button>
 
       <button
         onClick={onRedo}
-        disabled={!canRedo}
-        title="Redo (Ctrl+Y)"
+        disabled={!canRedo || isPreviewActive}
+        title={isPreviewActive ? 'Redo (disabled in formatted mode)' : 'Redo (Ctrl+Y)'}
         style={{
           ...buttonBase,
-          backgroundColor: canRedo ? '#f9f9f9' : '#f5f5f5',
-          color: canRedo ? '#0a0a0a' : '#b0b0b0',
-          cursor: canRedo ? 'pointer' : 'not-allowed',
+          backgroundColor: (canRedo && !isPreviewActive) ? '#f9f9f9' : '#f5f5f5',
+          color: (canRedo && !isPreviewActive) ? '#0a0a0a' : '#b0b0b0',
+          cursor: (canRedo && !isPreviewActive) ? 'pointer' : 'not-allowed',
         }}
-        onMouseEnter={(e) => { if (canRedo) onEnter(e); }}
-        onMouseLeave={(e) => { if (canRedo) onLeave(e); }}
+        onMouseEnter={(e) => { if (canRedo && !isPreviewActive) onEnter(e); }}
+        onMouseLeave={(e) => { if (canRedo && !isPreviewActive) onLeave(e); }}
       >
         <Redo2 size={15} />
       </button>

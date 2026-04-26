@@ -31,7 +31,14 @@
       "Bash(pkill -f \"node.*next\")",
       "PowerShell(Stop-Process *)",
       "Bash(curl -s http://localhost:3000/)",
-      "Bash(cd D:\\\\\\\\Projects\\\\\\\\marka-editor)"
+      "Bash(cd D:\\\\\\\\Projects\\\\\\\\marka-editor)",
+      "Bash(npm test *)",
+      "Bash(taskkill *)",
+      "Bash(curl -s http://localhost:3001)",
+      "PowerShell(taskkill *)",
+      "Bash(git reset *)",
+      "Bash(kill %1)",
+      "Bash(npx tsc *)"
     ]
   },
   "model": "haiku"

@@ -1,24 +1,54 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { EditorView } from '@codemirror/view';
 import type { ViewUpdate } from '@codemirror/view';
 import { undo as cmUndo, redo as cmRedo, undoDepth, redoDepth } from '@codemirror/commands';
 import { Editor } from '@/components/Editor';
 import { Preview } from '@/components/Preview';
 import { Header } from '@/components/Header';
+import { StatusBar } from '@/components/StatusBar';
 import { ImageInsertModal } from '@/components/ImageInsertModal';
 import { useDocument } from '@/hooks/useDocument';
+import { useStatusBar } from '@/hooks/useStatusBar';
 import { applyFormatting } from '@/utils/markdown-commands';
 import { FormattingCommand } from '@/types/editor';
 
 export default function EditorLayout() {
-  const { state, setContent } = useDocument();
-  const [isPreviewActive, setIsPreviewActive] = useState(false);
+  const { state, setContent, setFileName } = useDocument();
+  const statusBarStats = useStatusBar(state.content);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [isPreviewActive, setIsPreviewActive] = useState(true);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const editorViewRef = useRef<EditorView | null>(null);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    document.title = state.fileName;
+  }, [state.fileName]);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const hasSeenWelcome = localStorage.getItem('marka-welcome-shown');
+    if (!hasSeenWelcome) {
+      fetch('/Welcome-to-Marka-Editor.md')
+        .then((res) => res.text())
+        .then((content) => {
+          setContent(content);
+          setFileName('Welcome-to-Marka-Editor.md');
+          localStorage.setItem('marka-welcome-shown', 'true');
+        })
+        .catch(() => {
+          // Silently fail if welcome file doesn't load
+        });
+    }
+  }, [isHydrated, setContent, setFileName]);
 
   const handleChange = (newContent: string, viewUpdate: ViewUpdate): void => {
     setContent(newContent);
@@ -79,7 +109,7 @@ export default function EditorLayout() {
         onTogglePreview={handleTogglePreview}
       />
 
-      <div style={{ flex: 1, marginTop: '90px' }}>
+      <div style={{ height: 'calc(100vh - 130px)', marginTop: '107px', overflow: 'hidden' }}>
         {isPreviewActive ? (
           <Preview content={state.content} />
         ) : (
@@ -90,6 +120,12 @@ export default function EditorLayout() {
           />
         )}
       </div>
+
+      {isHydrated && (
+        <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 10 }}>
+          <StatusBar stats={statusBarStats} />
+        </div>
+      )}
 
       <ImageInsertModal
         isOpen={isImageModalOpen}
