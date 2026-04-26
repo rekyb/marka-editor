@@ -18,12 +18,12 @@ describe('useUndoRedo', () => {
   it('push adds to history', () => {
     const { result } = renderHook(() => useUndoRedo());
     act(() => {
-      result.current.push('content1');
+      result.current.record('content1');
     });
     expect(result.current.content).toBe('content1');
     expect(result.current.canUndo).toBe(false);
     act(() => {
-      result.current.push('content2');
+      result.current.record('content2');
     });
     expect(result.current.content).toBe('content2');
     expect(result.current.canUndo).toBe(true);
@@ -32,8 +32,8 @@ describe('useUndoRedo', () => {
   it('undo restores previous content', () => {
     const { result } = renderHook(() => useUndoRedo());
     act(() => {
-      result.current.push('content1');
-      result.current.push('content2');
+      result.current.record('content1');
+      result.current.record('content2');
     });
     expect(result.current.content).toBe('content2');
     act(() => {
@@ -46,8 +46,8 @@ describe('useUndoRedo', () => {
   it('redo restores future content', () => {
     const { result } = renderHook(() => useUndoRedo());
     act(() => {
-      result.current.push('content1');
-      result.current.push('content2');
+      result.current.record('content1');
+      result.current.record('content2');
       result.current.undo();
     });
     expect(result.current.content).toBe('content1');
@@ -60,7 +60,7 @@ describe('useUndoRedo', () => {
   it('undo does nothing at beginning of history', () => {
     const { result } = renderHook(() => useUndoRedo());
     act(() => {
-      result.current.push('content1');
+      result.current.record('content1');
     });
     const currentContent = result.current.content;
     act(() => {
@@ -72,8 +72,8 @@ describe('useUndoRedo', () => {
   it('redo does nothing at end of history', () => {
     const { result } = renderHook(() => useUndoRedo());
     act(() => {
-      result.current.push('content1');
-      result.current.push('content2');
+      result.current.record('content1');
+      result.current.record('content2');
     });
     const currentContent = result.current.content;
     act(() => {
@@ -85,13 +85,13 @@ describe('useUndoRedo', () => {
   it('push after undo clears future', () => {
     const { result } = renderHook(() => useUndoRedo());
     act(() => {
-      result.current.push('content1');
-      result.current.push('content2');
+      result.current.record('content1');
+      result.current.record('content2');
       result.current.undo();
     });
     expect(result.current.canRedo).toBe(true);
     act(() => {
-      result.current.push('content3');
+      result.current.record('content3');
     });
     expect(result.current.content).toBe('content3');
     expect(result.current.canRedo).toBe(false);
@@ -102,12 +102,12 @@ describe('useUndoRedo', () => {
     expect(result.current.canUndo).toBe(false);
     expect(result.current.canRedo).toBe(false);
     act(() => {
-      result.current.push('1');
+      result.current.record('1');
     });
     expect(result.current.canUndo).toBe(false);
     expect(result.current.canRedo).toBe(false);
     act(() => {
-      result.current.push('2');
+      result.current.record('2');
     });
     expect(result.current.canUndo).toBe(true);
     expect(result.current.canRedo).toBe(false);

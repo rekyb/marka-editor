@@ -13,7 +13,7 @@ function getEmotionCache() {
   return emotionCache;
 }
 
-export function EmotionCacheProvider({ children }: { children: ReactNode }) {
+export function EmotionCacheProvider({ children }: { readonly children: ReactNode }) {
   const cache = useMemo(() => getEmotionCache(), []);
   return <CacheProvider value={cache}>{children}</CacheProvider>;
 }

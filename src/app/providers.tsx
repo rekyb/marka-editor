@@ -30,7 +30,7 @@ const theme = createTheme({
   },
 });
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children }: { readonly children: ReactNode }) {
   return (
     <ThemeProvider theme={theme}>
       {children}

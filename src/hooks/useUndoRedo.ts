@@ -5,7 +5,7 @@ import { HistoryState } from '@/types/editor';
 
 interface UseUndoRedoReturn {
   readonly content: string;
-  readonly push: (content: string) => void;
+  readonly record: (content: string) => void;
   readonly undo: () => void;
   readonly redo: () => void;
   readonly canUndo: boolean;
@@ -19,7 +19,7 @@ export function useUndoRedo(initialContent = ''): UseUndoRedoReturn {
     future: [],
   });
 
-  const push = useCallback((content: string): void => {
+  const record = useCallback((content: string): void => {
     setHistory((prev) => ({
       past: [...prev.past, prev.present],
       present: content,
@@ -55,7 +55,7 @@ export function useUndoRedo(initialContent = ''): UseUndoRedoReturn {
 
   return {
     content: history.present,
-    push,
+    record,
     undo,
     redo,
     canUndo: history.past.length > 0,
