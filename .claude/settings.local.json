@@ -16,7 +16,8 @@
       "Bash(git commit -m 'retro: learnings from session 2026-04-26 *)",
       "Bash(git push *)",
       "Bash(git remote *)",
-      "Bash(git commit -m 'feat: Phase 2 - Core Editor Setup complete *)"
+      "Bash(git commit -m 'feat: Phase 2 - Core Editor Setup complete *)",
+      "Bash(git commit -m 'ci: Add SonarQube integration with GitHub Actions *)"
     ]
   }
 }
