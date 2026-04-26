@@ -6,7 +6,17 @@
       "Bash(npm create *)",
       "Bash(cd /tmp)",
       "Bash(npx create-next-app@latest /d/Projects/project-ran --typescript --tailwind=false --eslint=false --app --src-dir --import-alias=@/* --skip-install)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm run *)",
+      "Bash(npm list *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(git add *)",
+      "Bash(git commit -m 'retro: learnings from session 2026-04-26 *)",
+      "Bash(git push *)",
+      "Bash(git remote *)",
+      "Bash(git commit -m 'feat: Phase 2 - Core Editor Setup complete *)"
     ]
   }
 }
