@@ -5,8 +5,6 @@ import { FolderOpen, Download, ChevronDown } from 'lucide-react';
 import { RecentFile } from '@/types/editor';
 
 interface FileMenuProps {
-  readonly fileName: string;
-  readonly isDirty: boolean;
   readonly onOpenFile: () => Promise<void>;
   readonly onSaveFile: () => void;
   readonly recentFiles: readonly RecentFile[];
@@ -32,8 +30,6 @@ const buttonBase: React.CSSProperties = {
 };
 
 export function FileMenu({
-  fileName,
-  isDirty,
   onOpenFile,
   onSaveFile,
   recentFiles,
@@ -76,11 +72,6 @@ export function FileMenu({
       >
         <Download size={16} />
       </button>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: '120px' }}>
-        <span style={{ fontSize: '13px', fontWeight: 500, color: '#0a0a0a' }}>{fileName}</span>
-        {isDirty && <span style={{ color: '#6366f1', fontSize: '11px' }}>●</span>}
-      </div>
 
       <div style={{ position: 'relative' }}>
         <button

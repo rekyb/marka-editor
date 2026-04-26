@@ -54,12 +54,12 @@ export function Header({
           color: '#0a0a0a',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <img src="/icon.svg" width={32} height={32} alt="" style={{ marginRight: '10px', flexShrink: 0 }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/icon.svg" width={32} height={32} alt="" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '14px', fontWeight: 500, color: '#0a0a0a' }}>{fileName}</span>
+          {isDirty && <span style={{ color: '#6366f1', fontSize: '12px' }}>●</span>}
         </div>
         <FileMenu
-          fileName={fileName}
-          isDirty={isDirty}
           onOpenFile={onOpenFile}
           onSaveFile={onSaveFile}
           recentFiles={recentFiles}
