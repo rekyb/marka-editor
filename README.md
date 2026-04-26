@@ -1,6 +1,6 @@
 # Marka Editor
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rekyb_marka-editor&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rekyb_marka-editor)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rekyb-1893_marka-editor&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rekyb-1893_marka-editor)
 
 A professional markdown editor for tech teams. Built for developers, UX researchers, designers, PMs, and QA engineers who need fast, distraction-free markdown editing with live preview, syntax highlighting, and keyboard shortcuts.
 
