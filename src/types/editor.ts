@@ -15,6 +15,7 @@ export type FormattingCommand =
   | 'italic'
   | 'code'
   | 'link'
+  | 'image'
   | 'heading1'
   | 'heading2'
   | 'heading3'
@@ -22,7 +23,8 @@ export type FormattingCommand =
   | 'orderedList'
   | 'codeBlock'
   | 'quote'
-  | 'horizontalRule';
+  | 'horizontalRule'
+  | 'table';
 
 export interface KeyboardShortcut {
   readonly key: string;

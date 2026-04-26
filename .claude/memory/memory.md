@@ -29,6 +29,23 @@
 - Phase 3 (Preview & Layout): Complete (2026-04-26)
 - Phase 4-9: Pending
 
+## 2026-04-26 (Afternoon — Image Modal & Scrollbar)
+
+### Corrections
+- Code block rendering wrapped SyntaxHighlighter in a `<div>`, causing `<pre>` inside `<p>` hydration errors. Fix: return SyntaxHighlighter directly from code component handler, letting react-markdown manage structure. React-markdown's custom component handlers must respect parent element constraints.
+
+### Discoveries
+- Creating a dedicated ImageInsertModal with form inputs, live preview, and clear insert/cancel callbacks provides a clean pattern for user-guided content insertion. Dedicated modal components decouple insertion logic from toolbar state.
+- ResizeObserver on CodeMirror's scrollDOM provides reliable scroll-width tracking for synchronized UI elements, avoiding brittle manual measurements. Enables sticky scrollbar implementation that mirrors editor content width.
+
+### Patterns
+- Passing options objects to utility functions (applyFormatting with `{ altText, url }`) cleanly extends functionality without signature bloat. Options objects scale better than adding multiple parameters.
+- Dedicated modal components with form inputs and clear insert/cancel callbacks make integration with toolbar straightforward and composable.
+
+### Anti-Patterns
+- Attempting to make CodeMirror's internal scrollbar "sticky" via CSS or wrapper hacks is friction-prone. Parallel scrollbar elements synced via scroll event listeners work more reliably.
+- Wrapping code blocks in extra divs when returning from react-markdown custom component handlers breaks the expected HTML structure (pre cannot be descendant of p).
+
 ## Tech Stack Decisions
 
 - CodeMirror 6 for editor (lightweight, markdown support, undo/redo built-in)
