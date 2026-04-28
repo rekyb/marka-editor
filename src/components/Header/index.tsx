@@ -3,6 +3,7 @@
 import { Toolbar } from '@/components/Toolbar';
 import { FileMenu } from '@/components/FileMenu';
 import { FormattingCommand, RecentFile } from '@/types/editor';
+import styles from './Header.module.css';
 
 interface HeaderProps {
   readonly fileName: string;
@@ -19,6 +20,8 @@ interface HeaderProps {
   readonly recentFiles: readonly RecentFile[];
   readonly onLoadRecentFile: (fileKey: string) => Promise<void>;
   readonly onClearRecents: () => void;
+  readonly isDarkMode: boolean;
+  readonly onToggleDarkMode: () => void;
 }
 
 export function Header({
@@ -36,28 +39,16 @@ export function Header({
   recentFiles,
   onLoadRecentFile,
   onClearRecents,
+  isDarkMode,
+  onToggleDarkMode,
 }: HeaderProps) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10 }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          height: '65px',
-          padding: '0 16px',
-          backgroundColor: '#ffffff',
-          borderBottom: '1px solid #e5e5e5',
-          fontFamily: 'var(--font-dm-sans), sans-serif',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: '#0a0a0a',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <img src="/icon.svg" width={32} height={32} alt="" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '14px', fontWeight: 500, color: '#0a0a0a' }}>{fileName}</span>
-          {isDirty && <span style={{ color: '#6366f1', fontSize: '12px' }}>●</span>}
+    <div className={styles.header}>
+      <div className={styles.topBar}>
+        <div className={styles.titleSection}>
+          <img src="/icon.svg" width={32} height={32} alt="" className={styles.logo} />
+          <span className={styles.fileName}>{fileName}</span>
+          {isDirty && <span className={styles.dirtyIndicator}>●</span>}
         </div>
         <FileMenu
           onOpenFile={onOpenFile}
@@ -65,6 +56,8 @@ export function Header({
           recentFiles={recentFiles}
           onLoadRecentFile={onLoadRecentFile}
           onClearRecents={onClearRecents}
+          isDarkMode={isDarkMode}
+          onToggleDarkMode={onToggleDarkMode}
         />
       </div>
 

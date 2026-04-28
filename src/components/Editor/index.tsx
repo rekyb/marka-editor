@@ -5,14 +5,16 @@ import CodeMirror from '@uiw/react-codemirror';
 import { EditorView, lineNumbers } from '@codemirror/view';
 import type { ViewUpdate } from '@codemirror/view';
 import { markdown } from '@codemirror/lang-markdown';
+import styles from './Editor.module.css';
 
 interface EditorProps {
   readonly content: string;
   readonly onChange: (content: string, viewUpdate: ViewUpdate) => void;
   readonly onEditorReady?: (view: EditorView) => void;
+  readonly isDarkMode?: boolean;
 }
 
-export function Editor({ content, onChange, onEditorReady }: EditorProps) {
+export function Editor({ content, onChange, onEditorReady, isDarkMode = false }: EditorProps) {
   const editorViewRef = useRef<EditorView | null>(null);
   const scrollbarRef = useRef<HTMLDivElement>(null);
   const scrollbarInnerRef = useRef<HTMLDivElement>(null);
@@ -58,29 +60,15 @@ export function Editor({ content, onChange, onEditorReady }: EditorProps) {
   };
 
   return (
-    <div
-      style={{
-        flex: 1,
-        minWidth: 0,
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <div
-        style={{
-          flex: 1,
-          minWidth: 0,
-          overflow: 'hidden',
-        }}
-      >
+    <div className={styles.container}>
+      <div className={styles.editorWrapper}>
         <CodeMirror
           value={content}
           extensions={[markdown(), lineNumbers()]}
           onChange={onChange}
           onCreateEditor={handleEditorReady}
           height="100%"
-          theme="light"
+          theme={isDarkMode ? 'dark' : 'light'}
           basicSetup={{
             lineNumbers: true,
             foldGutter: false,
@@ -96,27 +84,15 @@ export function Editor({ content, onChange, onEditorReady }: EditorProps) {
           }}
           style={{
             height: '100%',
-            fontFamily: 'var(--font-jetbrains-mono), monospace',
+            fontFamily: 'var(--font-mono)',
             fontSize: '14px',
             lineHeight: '1.6',
           }}
         />
       </div>
 
-      <div
-        ref={scrollbarRef}
-        style={{
-          position: 'sticky',
-          bottom: 0,
-          height: '12px',
-          backgroundColor: '#f5f5f5',
-          borderTop: '1px solid #e5e5e5',
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          flexShrink: 0,
-        }}
-      >
-        <div ref={scrollbarInnerRef} style={{ height: '100%' }} />
+      <div ref={scrollbarRef} className={styles.scrollbar}>
+        <div ref={scrollbarInnerRef} className={styles.scrollbarInner} />
       </div>
     </div>
   );

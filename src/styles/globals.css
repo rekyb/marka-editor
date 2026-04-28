@@ -1,5 +1,6 @@
 /* Light mode (default) */
 :root {
+  /* Colors */
   --color-primary: #6366f1;
   --color-neutral: #0a0a0a;
   --color-background: #ffffff;
@@ -10,30 +11,77 @@
   --color-text: #0a0a0a;
   --color-text-secondary: #6b6b6b;
 
+  /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 12px;
   --spacing-lg: 16px;
   --spacing-xl: 24px;
 
+  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 200ms ease;
 
+  /* Border Radius */
   --radius-sm: 3px;
   --radius-md: 4px;
   --radius-lg: 8px;
+
+  /* Fonts */
+  --font-sans: var(--font-open-sans);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Typography Scale */
+  --text-display-lg-size: 32px;
+  --text-display-lg-height: 1.2;
+  --text-display-lg-weight: 700;
+  --text-h1-size: 28px;
+  --text-h1-height: 1.2;
+  --text-h1-weight: 700;
+  --text-h2-size: 24px;
+  --text-h2-height: 1.3;
+  --text-h2-weight: 700;
+  --text-h3-size: 20px;
+  --text-h3-height: 1.4;
+  --text-h3-weight: 600;
+  --text-body-lg-size: 16px;
+  --text-body-lg-height: 1.6;
+  --text-body-lg-weight: 400;
+  --text-body-size: 15px;
+  --text-body-height: 1.6;
+  --text-body-weight: 400;
+  --text-body-sm-size: 14px;
+  --text-body-sm-height: 1.5;
+  --text-body-sm-weight: 400;
+  --text-label-size: 12px;
+  --text-label-height: 1.5;
+  --text-label-weight: 500;
+  --text-label-sm-size: 11px;
+  --text-label-sm-height: 1.4;
+  --text-label-sm-weight: 500;
+  --text-code-size: 14px;
+  --text-code-height: 1.5;
+  --text-code-weight: 400;
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #1a1a1a;
-    --color-surface: #2a2a2a;
-    --color-surface-hover: #3a3a3a;
-    --color-text: #ffffff;
-    --color-text-secondary: #b0b0b0;
-    --color-border: #404040;
-  }
+/* Dark mode — class-only, not media query, so the toggle button controls it */
+html.dark-mode {
+  --color-background: #1a1a1a;
+  --color-surface: #2a2a2a;
+  --color-surface-hover: #3a3a3a;
+  --color-text: #ffffff;
+  --color-text-secondary: #b0b0b0;
+  --color-border: #404040;
+}
+
+/* Light mode override — beats any browser dark-mode preference */
+html:not(.dark-mode) {
+  --color-background: #ffffff;
+  --color-border: #d5d5d5;
+  --color-surface: #f9f9f9;
+  --color-surface-hover: #f0f0f0;
+  --color-text: #0a0a0a;
+  --color-text-secondary: #6b6b6b;
 }
 
 /* Reset */
@@ -51,19 +99,21 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-dm-sans);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-height);
+  font-weight: var(--text-body-weight);
   color: var(--color-text);
   background-color: var(--color-background);
-  line-height: 1.5;
 }
 
 button {
-  font-family: inherit;
+  font-family: var(--font-sans);
 }
 
 code,
 pre {
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: var(--font-mono);
 }
 
 #__next {

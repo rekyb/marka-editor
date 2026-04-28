@@ -1,0 +1,92 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-background);
+  position: relative;
+}
+
+.dragOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.dragContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  padding-left: calc(var(--spacing-xl) * 2);
+  padding-right: calc(var(--spacing-xl) * 2);
+  border-radius: var(--radius-lg);
+  border: 3px dashed rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.05);
+  min-width: 320px;
+  min-height: 320px;
+  text-align: center;
+  animation: scaleIn 0.3s ease;
+}
+
+.dragIcon {
+  margin-bottom: var(--spacing-lg);
+}
+
+.dragTitle {
+  font-size: var(--text-h2-size);
+  line-height: var(--text-h2-height);
+  font-weight: var(--text-h2-weight);
+  color: #fff;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.dragSubtitle {
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-height);
+  font-weight: var(--text-body-weight);
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.mainContent {
+  height: calc(100vh - 130px);
+  margin-top: 107px;
+  overflow: hidden;
+}
+
+.statusBarWrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

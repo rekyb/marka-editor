@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+}
+
+.menuContent {
+  min-width: 240px;
+}
+
+.emptyState {
+  padding: var(--spacing-md);
+  font-family: var(--font-sans);
+  font-size: var(--text-label-size);
+  line-height: var(--text-label-height);
+  font-weight: var(--text-label-weight);
+  color: var(--color-text-secondary);
+}
+
+.menuItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.fileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.fileTime {
+  font-family: var(--font-sans);
+  font-size: var(--text-label-sm-size);
+  line-height: var(--text-label-sm-height);
+  font-weight: var(--text-label-sm-weight);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.clearButton {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  border-top: 1px solid var(--color-border);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: var(--text-label-sm-size);
+  line-height: var(--text-label-sm-height);
+  font-weight: var(--text-label-sm-weight);
+  color: var(--color-text-secondary);
+  transition: background-color var(--transition-fast);
+}
+
+.clearButton:hover {
+  background-color: var(--color-surface);
+}
