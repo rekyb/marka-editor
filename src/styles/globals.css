@@ -1,0 +1,50 @@
+/* Light mode (default) */
+:root {
+  --color-primary: #6366f1;
+  --color-neutral: #0a0a0a;
+  --color-background: #ffffff;
+  --color-border: #d5d5d5;
+  --color-surface: #f9f9f9;
+  --color-surface-hover: #f0f0f0;
+  --color-disabled: #b0b0b0;
+  --color-text: #0a0a0a;
+  --color-text-secondary: #6b6b6b;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #1a1a1a;
+    --color-surface: #2a2a2a;
+    --color-surface-hover: #3a3a3a;
+    --color-text: #ffffff;
+    --color-text-secondary: #b0b0b0;
+    --color-border: #404040;
+  }
+}
+
+/* Reset */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-dm-sans);
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+button {
+  font-family: inherit;
+}
