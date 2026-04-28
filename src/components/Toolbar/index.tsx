@@ -5,7 +5,9 @@ import {
   List, ListOrdered, FileCode, Quote, Minus, Table,
   Undo2, Redo2, Braces, FileText,
 } from 'lucide-react';
+import { IconButton } from '@/components/IconButton';
 import { FormattingCommand } from '@/types/editor';
+import styles from './Toolbar.module.css';
 
 interface ToolbarProps {
   readonly onCommand: (command: FormattingCommand) => void;
@@ -38,141 +40,48 @@ const COMMAND_BUTTONS: ReadonlyArray<{
   { command: 'table',         icon: Table,       title: 'Insert Table' },
 ];
 
-const buttonBase: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '30px',
-  height: '30px',
-  borderRadius: '3px',
-  border: '1px solid #d5d5d5',
-  backgroundColor: '#f9f9f9',
-  color: '#0a0a0a',
-  cursor: 'pointer',
-  transition: 'background-color 0.15s ease, border-color 0.15s ease',
-  flexShrink: 0,
-};
-
-function onEnter(e: React.MouseEvent<HTMLButtonElement>): void {
-  e.currentTarget.style.backgroundColor = '#f0f0f0';
-  e.currentTarget.style.borderColor = '#b0b0b0';
-}
-
-function onLeave(e: React.MouseEvent<HTMLButtonElement>): void {
-  e.currentTarget.style.backgroundColor = '#f9f9f9';
-  e.currentTarget.style.borderColor = '#d5d5d5';
-}
-
-const divider = (
-  <div style={{ width: '1px', height: '20px', backgroundColor: '#e5e5e5', margin: '0 2px', flexShrink: 0 }} />
-);
-
 export function Toolbar({ onCommand, canUndo, canRedo, onUndo, onRedo, isPreviewActive, onTogglePreview }: ToolbarProps) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '3px',
-        padding: '6px 12px',
-        backgroundColor: '#ffffff',
-        borderBottom: '1px solid #e5e5e5',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-      }}
-    >
+    <div className={styles.toolbar}>
       {COMMAND_BUTTONS.map(({ command, icon: Icon, title }) => (
-        <button
+        <IconButton
           key={command}
-          onClick={() => { if (!isPreviewActive) onCommand(command); }}
+          icon={Icon}
+          ariaLabel={title}
           disabled={isPreviewActive}
           title={isPreviewActive ? `${title} (disabled in formatted mode)` : title}
-          style={{
-            ...buttonBase,
-            backgroundColor: isPreviewActive ? '#f5f5f5' : '#f9f9f9',
-            color: isPreviewActive ? '#b0b0b0' : '#0a0a0a',
-            cursor: isPreviewActive ? 'not-allowed' : 'pointer',
-            borderColor: isPreviewActive ? '#d5d5d5' : '#d5d5d5',
-          }}
-          onMouseEnter={(e) => { if (!isPreviewActive) onEnter(e); }}
-          onMouseLeave={(e) => { if (!isPreviewActive) onLeave(e); }}
-        >
-          <Icon size={15} />
-        </button>
+          onClick={() => { if (!isPreviewActive) onCommand(command); }}
+          size="sm"
+        />
       ))}
 
-      {divider}
+      <div className={styles.divider} />
 
-      <button
-        onClick={onUndo}
+      <IconButton
+        icon={Undo2}
+        ariaLabel="Undo"
         disabled={!canUndo || isPreviewActive}
         title={isPreviewActive ? 'Undo (disabled in formatted mode)' : 'Undo (Ctrl+Z)'}
-        style={{
-          ...buttonBase,
-          backgroundColor: (canUndo && !isPreviewActive) ? '#f9f9f9' : '#f5f5f5',
-          color: (canUndo && !isPreviewActive) ? '#0a0a0a' : '#b0b0b0',
-          cursor: (canUndo && !isPreviewActive) ? 'pointer' : 'not-allowed',
-        }}
-        onMouseEnter={(e) => { if (canUndo && !isPreviewActive) onEnter(e); }}
-        onMouseLeave={(e) => { if (canUndo && !isPreviewActive) onLeave(e); }}
-      >
-        <Undo2 size={15} />
-      </button>
+        onClick={onUndo}
+        size="sm"
+      />
 
-      <button
-        onClick={onRedo}
+      <IconButton
+        icon={Redo2}
+        ariaLabel="Redo"
         disabled={!canRedo || isPreviewActive}
         title={isPreviewActive ? 'Redo (disabled in formatted mode)' : 'Redo (Ctrl+Y)'}
-        style={{
-          ...buttonBase,
-          backgroundColor: (canRedo && !isPreviewActive) ? '#f9f9f9' : '#f5f5f5',
-          color: (canRedo && !isPreviewActive) ? '#0a0a0a' : '#b0b0b0',
-          cursor: (canRedo && !isPreviewActive) ? 'pointer' : 'not-allowed',
-        }}
-        onMouseEnter={(e) => { if (canRedo && !isPreviewActive) onEnter(e); }}
-        onMouseLeave={(e) => { if (canRedo && !isPreviewActive) onLeave(e); }}
-      >
-        <Redo2 size={15} />
-      </button>
+        onClick={onRedo}
+        size="sm"
+      />
 
-      <div style={{ flex: 1 }} />
+      <div className={styles.spacer} />
 
-      <div
-        style={{
-          display: 'flex',
-          backgroundColor: '#e5e5e5',
-          borderRadius: '4px',
-          padding: '2px',
-          gap: '2px',
-        }}
-      >
+      <div className={styles.toggleGroup}>
         <button
           onClick={onTogglePreview}
           title="Formatted mode"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            padding: '4px 8px',
-            borderRadius: '3px',
-            border: 'none',
-            backgroundColor: isPreviewActive ? '#6366f1' : 'transparent',
-            color: isPreviewActive ? '#ffffff' : '#0a0a0a',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-dm-sans), sans-serif',
-            fontSize: '12px',
-            fontWeight: 500,
-            transition: 'background-color 0.15s ease',
-          }}
-          onMouseEnter={(e) => {
-            if (!isPreviewActive) {
-              e.currentTarget.style.backgroundColor = '#d0d0d0';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isPreviewActive) {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }
-          }}
+          className={`${styles.toggleButton} ${isPreviewActive ? styles.active : ''}`}
         >
           <FileText size={14} />
           Formatted
@@ -181,31 +90,7 @@ export function Toolbar({ onCommand, canUndo, canRedo, onUndo, onRedo, isPreview
         <button
           onClick={onTogglePreview}
           title="Syntax mode"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            padding: '4px 8px',
-            borderRadius: '3px',
-            border: 'none',
-            backgroundColor: !isPreviewActive ? '#6366f1' : 'transparent',
-            color: !isPreviewActive ? '#ffffff' : '#0a0a0a',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-dm-sans), sans-serif',
-            fontSize: '12px',
-            fontWeight: 500,
-            transition: 'background-color 0.15s ease',
-          }}
-          onMouseEnter={(e) => {
-            if (isPreviewActive) {
-              e.currentTarget.style.backgroundColor = '#d0d0d0';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (isPreviewActive) {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }
-          }}
+          className={`${styles.toggleButton} ${!isPreviewActive ? styles.active : ''}`}
         >
           <Braces size={14} />
           Syntax
