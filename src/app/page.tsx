@@ -12,12 +12,15 @@ import { ImageInsertModal } from '@/components/ImageInsertModal';
 import { useDocument } from '@/hooks/useDocument';
 import { useStatusBar } from '@/hooks/useStatusBar';
 import { useFileIO } from '@/hooks/useFileIO';
+import { useDarkMode } from '@/hooks/useDarkMode';
 import { applyFormatting } from '@/utils/markdown-commands';
 import { FormattingCommand } from '@/types/editor';
+import styles from './page.module.css';
 
 export default function EditorLayout() {
   const { state, setContent, setFileName, markClean } = useDocument();
   const statusBarStats = useStatusBar(state.content);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [isHydrated, setIsHydrated] = useState(false);
   const [isPreviewActive, setIsPreviewActive] = useState(true);
   const [canUndo, setCanUndo] = useState(false);
@@ -176,46 +179,11 @@ export default function EditorLayout() {
       onDragEnter={handleDragEnter}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-        backgroundColor: '#fafafa',
-        position: 'relative',
-      }}
+      className={styles.root}
     >
       {isDragging && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            zIndex: 1000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            animation: 'fadeIn 0.2s ease',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '48px',
-              borderRadius: '12px',
-              border: '3px dashed rgba(255, 255, 255, 0.6)',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              minWidth: '320px',
-              minHeight: '320px',
-              textAlign: 'center',
-              animation: 'scaleIn 0.3s ease',
-            }}
-          >
+        <div className={styles.dragOverlay}>
+          <div className={styles.dragContent}>
             <svg
               width="64"
               height="64"
@@ -223,54 +191,19 @@ export default function EditorLayout() {
               fill="none"
               stroke="#fff"
               strokeWidth="2"
-              style={{ marginBottom: '16px' }}
+              className={styles.dragIcon}
             >
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
-            <h2
-              style={{
-                fontSize: '24px',
-                fontWeight: 600,
-                color: '#fff',
-                margin: '0 0 8px 0',
-              }}
-            >
-              Drop your file here
-            </h2>
-            <p
-              style={{
-                fontSize: '14px',
-                color: '#fff',
-                margin: 0,
-              }}
-            >
+            <h2 className={styles.dragTitle}>Drop your file here</h2>
+            <p className={styles.dragSubtitle}>
               Markdown files (.md, .markdown, .txt)
             </p>
           </div>
         </div>
       )}
-      <style>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes scaleIn {
-          from {
-            transform: scale(0.8);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-      `}</style>
       <Header
         fileName={isHydrated ? state.fileName : 'untitled.md'}
         isDirty={isHydrated ? state.isDirty : false}
@@ -286,9 +219,11 @@ export default function EditorLayout() {
         recentFiles={fileIO.recentFiles}
         onLoadRecentFile={fileIO.loadRecentFile}
         onClearRecents={fileIO.clearRecentFiles}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={toggleDarkMode}
       />
 
-      <div style={{ height: 'calc(100vh - 130px)', marginTop: '107px', overflow: 'hidden' }}>
+      <div className={styles.mainContent}>
         {isPreviewActive ? (
           <Preview content={state.content} />
         ) : (
@@ -296,12 +231,13 @@ export default function EditorLayout() {
             content={state.content}
             onChange={handleChange}
             onEditorReady={handleEditorReady}
+            isDarkMode={isDarkMode}
           />
         )}
       </div>
 
       {isHydrated && (
-        <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 10 }}>
+        <div className={styles.statusBarWrapper}>
           <StatusBar stats={statusBarStats} />
         </div>
       )}

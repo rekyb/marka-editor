@@ -2,6 +2,7 @@
 
 import { StatusBarStats } from '@/hooks/useStatusBar';
 import { APP_NAME, APP_VERSION } from '@/constants';
+import styles from './StatusBar.module.css';
 
 interface StatusBarProps {
   readonly stats: StatusBarStats;
@@ -19,29 +20,15 @@ function formatFileSize(bytes: number): string {
 }
 
 export function StatusBar({ stats }: StatusBarProps) {
-  const sep = <span style={{ color: '#e8e8ec' }}>·</span>;
+  const sep = <span className={styles.separator}>·</span>;
   return (
-    <footer
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: '40px',
-        paddingRight: '16px',
-        paddingLeft: '16px',
-        backgroundColor: '#ffffff',
-        borderTop: '1px solid #e8e8ec',
-        fontFamily: 'var(--font-dm-sans), monospace',
-        fontSize: '12px',
-        color: '#6b6b6b',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <footer className={styles.statusBar}>
+      <div className={styles.left}>
         <span>{APP_NAME}</span>
         {sep}
         <span>v<strong>{APP_VERSION}</strong></span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div className={styles.right}>
         <span>Lines: <strong>{stats.lineCount}</strong></span>
         {sep}
         <span>Characters: <strong>{stats.characterCount}</strong></span>

@@ -51,10 +51,13 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 12px;
+  font-family: var(--font-sans);
+  font-size: var(--text-label-size);
+  line-height: var(--text-label-height);
+  font-weight: var(--text-label-weight);
   color: var(--color-text);
   transition: background-color var(--transition-fast);
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .menuItem:hover {

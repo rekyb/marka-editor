@@ -1,0 +1,50 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 65px;
+  padding: 0 var(--spacing-lg);
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-sans);
+  font-size: var(--text-label-size);
+  line-height: var(--text-label-height);
+  font-weight: var(--text-label-weight);
+  color: var(--color-text);
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.fileName {
+  font-family: var(--font-sans);
+  font-size: var(--text-label-size);
+  line-height: var(--text-label-height);
+  font-weight: var(--text-label-weight);
+  color: var(--color-text);
+}
+
+.dirtyIndicator {
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-label-size);
+  line-height: var(--text-label-height);
+  font-weight: var(--text-label-weight);
+}
+
+.logo {
+  flex-shrink: 0;
+}
